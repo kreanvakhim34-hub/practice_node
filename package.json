@@ -1,0 +1,14 @@
+{
+  "name": "node2026a-mvc-oop-demo",
+  "version": "1.0.0",
+  "description": "Basic MVC and OOP example with Node.js and Express",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
