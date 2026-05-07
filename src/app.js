@@ -1,29 +1,36 @@
+
 import express from "express";
-import Database from "./config/db.js";
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/userRoute.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use("/api", userRoutes);
+app.use("/users", userRoutes);
 
+//Health check
 app.get("/", (req, res) => {
-  res.json({
-    message: "MVC and OOP Node.js project is running."
-  });
+  res.json({ message: "I Love You So Much." });
 });
 
-const startServer = async () => {
-  try {
-    await Database.connect();
+//Global error handler
+app.use((err, req, res, _next) => { //destructuring via unused _next
+  const { message = "Unexpected error", status = 500 } = err; //destructuring with defaults
+  res.status(status).json({ success: false, message });
+});
 
+//async/await + try/catch for startup
+const start = async () => {
+  try {
     app.listen(PORT, () => {
-      console.log(`Server is running at http://localhost:${PORT}`);
+      console.log(`✅ Server running on http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Server startup failed:", error.message);
+    console.error("❌ Failed to start server:", error.message);
+    process.exit(1);
   }
 };
 
-startServer();
+start();
+
+export default app;
